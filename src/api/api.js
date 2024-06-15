@@ -19,6 +19,7 @@ class RecipeApi {
         : {};
 
     try {
+      console.debug("API Call:", url, data, params, method);
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
       console.error("API Error:", err.response);
@@ -37,9 +38,62 @@ class RecipeApi {
    * @returns recipeData - { title, servings, sourceUrl, sourceName, image, instructions,
  *           ingredients, cuisines, courses, diets, occasions }
    */
-  static async getRecipeFromUrl(query) {
-    const res = await this.request('/', query);
+  static async getRecipeFromUrl(url) {
+    const res = await this.request('', url);
     return res.recipeData;
+
+    // TEST CODE ONLY
+    // return {
+    //   title: 'Recipe title',
+    //   courses: ['lunch', 'main course', 'main dish'],
+    //   cuisines: [],
+    //   diets: ['gluten free'],
+    //   image: 'https://spoonacular.com/recipeImages/1084395-556x370.jpg',
+    //   ingredients: [
+    //     {
+    //       label: "boneless, skinless chicken thighs — or chicken breasts",
+    //       baseFood: "skinless boneless chicken breasts",
+    //       measures: [
+    //         {
+    //           amount: 1.5,
+    //           unit: 'lb',
+    //           unitType: 'us'
+    //         },
+    //         {
+    //           amount: 680.389,
+    //           unit: 'g',
+    //           unitType: 'metric'
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       label: "chili paste — sambal oelek, sriracha, or hot sauce",
+    //       baseFood: "hot sauce",
+    //       measures: [
+    //         {
+    //           amount: 2,
+    //           unit: 'tsps',
+    //           unitType: 'us'
+    //         },
+    //         {
+    //           amount: 2,
+    //           unit: 'tsps',
+    //           unitType: 'metric'
+    //         }
+    //       ]
+    //     },
+    //   ],
+    //   instructions: [
+    //     'Place the chicken in the bottom of a 6-quart or larger slow cooker.',
+    //     "Remove the chicken to a plate and let cool slightly.",
+    //     'For quicker sauce thickening, reduce',
+    //     "With two forks (or your fingers if the chicken is cool enough)",
+    //   ],
+    //   occasions: [],
+    //   servings: 4,
+    //   sourceName: 'wellplated.com',
+    //   sourceUrl: "https://www.wellplated.com/slow-cooker-honey-garlic-chicken/",
+    // }
   }
 
   /* AUTH ROUTES *************************************************************/
@@ -316,11 +370,14 @@ class RecipeApi {
    * @param {String} username
    * @returns recipe id
    */
-  static async deleteCategory(username, id) {
+  static async deleteRecipe(username, id) {
     const res = await this.request(`users/${username}/recipes/${id}`,
       {}, "delete");
     return res.deleted;
   }
-
-
+  // end recipe routes
 }
+
+RecipeApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY1NDU2MDY5Nn0.SQ4IbIpOid44T27CeYYRhfoLwaET0p5xRyf1auHzkXI";
+
+export default RecipeApi;
